@@ -1,0 +1,433 @@
+@use 'sass:color'
+	
+$background-white: #FFFFFF
+$background-yellow: #F2C94C
+$background-blue: #9B51E0
+$background-blue-darker: color.scale($background-blue, $lightness: -40%)
+$background-blue-lighter: color.scale($background-blue, $lightness: 40%)
+$color-primary: #FFFFFF
+$color-secondary: #263238
+$input-bg: color.scale($background-yellow, $lightness: -10%)
+$background-reward: #F0F0F0
+$transition-default: transform .2s ease-in-out
+$input-border-bottom-color: #26323861
+
+*
+	margin: 0
+	padding: 0
+	box-sizing: border-box
+
+html, body
+	font-size: 16px
+	height: 100vh
+	width: 100vw
+	background: $background-white
+	overflow-x: hidden
+
+body, input, button, textarea
+	color: $color-primary
+	font-size: 1rem
+	font: 500 1rem
+	font-family: Roboto, Helvetica, Arial, Helvetica, sans-serif
+
+button
+	text-align: center
+	white-space: nowrap
+	vertical-align: middle
+	touch-action: manipulation
+	cursor: pointer
+	user-select: none
+	background-image: none
+	border: none
+	border-radius: 10px
+	position: relative
+	padding: 0
+	margin: 0
+	font-size: 1.2rem
+	font-weight: 400
+	text-transform: uppercase
+	letter-spacing: 0
+	outline: none
+
+	&.icon
+		display: flex
+		align-items: center
+		justify-content: center
+
+	&:hover, &:active, &:focus
+		border: none
+		outline: none
+
+#container-level
+	width: 100vw
+	height: 75px
+	display: flex
+	align-items: center
+	justify-content: flex-start
+	flex-flow: column
+	padding: 10px 20px 5px 20px
+
+	gap: 5px
+
+	h1
+		color: $background-blue
+		font-size: 18px
+
+	h2
+		color: $background-blue
+		font-size: 14px
+		display: none
+		transform: translateX(100vw)
+		transition: $transition-default
+
+
+main
+	width: 100vw
+	height: calc( 100vh - 125px )
+	overflow: hidden
+	position: relative
+
+	> div
+		width: 100%
+		height: 100%
+		padding: 5px
+		overflow-y: auto
+		display: grid
+		align-items: flex-start
+		justify-content: center
+		gap: 20px		
+		grid-template-columns: 1fr
+		position: absolute	
+		grid-auto-rows: min-content
+		transition: $transition-default
+
+#rewards
+	padding: 20px
+	row-gap: 10px
+	transform: translateX(100%)
+	display: none
+
+	.reward-card
+		background: $background-reward
+		border-radius: 8px
+		color: $color-secondary
+		padding: 15px 10px
+		font-size: 16px		
+
+		display: grid
+		align-items: center
+		justify-content: flex-start
+		grid-template-columns: 1fr 30px
+
+		p
+			text-transform: capitalize
+
+		svg
+			fill: #979797
+			width: 20px
+			height: 20px
+
+article
+	background: $background-yellow
+	border-radius: 10px
+	padding: 10px
+
+	display: grid
+	grid-template-areas: "title pencil" "body body"
+	grid-template-columns: 1fr 30px
+	grid-template-rows: minmax(30px, .25fr) 1fr
+	row-gap: 5px
+
+	&:last-child
+		margin-bottom: 10px
+
+	section
+		grid-area: body
+		display: grid
+		width: 100%
+		grid-template-columns: 1fr
+		grid-auto-rows: min-content
+		gap: 10px	
+
+	h1
+		grid-area: title
+		font-size: 24px
+		padding: 0
+		margin: 0
+
+	> button
+		grid-area: pencil
+		width: 30px
+		height: 30px
+		background: $background-blue
+
+	.pages
+		font-weight: 600
+		> div
+			display: inline-block
+
+		.current-page
+			color: $background-blue
+			font-size: 64px
+			position: relative
+
+			> button
+				background: $background-blue
+				border-radius: 50%
+				position: absolute
+				top: 0
+				right: -15px
+				width: 30px
+				height: 30px
+				box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.08), 0px 1px 12px rgba(0, 0, 0, 0.04)
+
+		.total-pages
+			font-size: 36px
+
+		.divider
+			font-size: 50px
+			margin-left: -2px
+			margin-right: -6px
+			transform: rotateZ(7deg)
+			font-weight: normal
+
+footer
+	position: fixed
+	bottom: 0
+	left: 0
+	right: 0
+	height: 40px
+	background: $background-yellow
+	border-top-left-radius: 10px
+	border-top-right-radius: 10px
+	display: flex
+	align-items: center
+	justify-content: space-between
+	z-index: 3	
+
+.menu
+	z-index: 2
+	position: absolute
+	background: $background-white
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.16), 0px 2px 4px rgba(0, 0, 0, 0.12), 0px 1px 8px rgba(0, 0, 0, 0.1)
+	border-radius: 8px
+	bottom: 0
+	left: 5px
+	padding-bottom: 48px
+	color: $color-secondary
+	display: flex
+	flex-flow: column
+	padding-top: 8px
+
+	a
+		padding: 8px 12px
+		font-size: 14px
+
+.bar-button
+	width: 40px
+	height: 40px
+	background: $background-yellow
+	display: grid
+	align-items: center
+	justify-content: center
+	
+
+	&.burger
+		transition: all .5s ease-in-out
+
+		> span
+			width: 15px
+			height: 2px
+			background: $color-primary
+			transition: all .5s ease-in-out
+
+			&::before,
+			&::after
+				content: ''
+				position: absolute
+				width: 15px
+				height: 2px
+				background: $color-primary
+				transition: all .25s ease-in-out
+			&::before
+				transform: translateY(-4px) translateX(-7px)
+
+			&::after
+				transform: translateY(4px) translateX(-7px)
+
+		&.open
+			> span
+				&::before
+					transform: translateY(0) translateX(-7px)
+
+				&::after
+					transform: translateY(0) translateX(-7px)
+
+.modal
+	display: none
+
+.modal-insert	
+	position: absolute
+	top: calc( 100vh - 40px )
+	bottom: -80vh
+	left: 0
+	width: 100vw
+	background: $background-yellow
+	z-index: 5
+	border-top-left-radius: 10px
+	border-top-right-radius: 10px
+	box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.08), 0px 1px 12px rgba(0, 0, 0, 0.04)
+
+	grid-template-areas: "top-buttons" "inputs" "confirm-button"
+	grid-template-rows: 40px calc(80vh - 120px) 80px
+
+	.modal-header
+		grid-area: top-buttons
+		display: flex
+		align-items: center
+		justify-content: space-between
+
+	.modal-footer
+		grid-area: confirm-button
+		display: flex
+		align-items: center
+		justify-content: center
+
+		button
+			height: 50px
+			width: 50px
+			padding: 0
+			border-radius: 50%
+			background: $background-blue
+
+	.modal-body
+		grid-area: inputs
+		display: grid
+		grid-template-rows: repeat( auto-fit, 1fr  )
+		padding: 10px 15px
+		gap: 10px
+
+		label
+			color: $background-blue
+			position: absolute
+			top: 15px
+
+	.input-holder
+		position: relative	
+		padding: 15px
+		padding-top: 30px		
+		background: $input-bg
+		border-radius: 6px 6px 0px 0px
+		border-bottom: thin solid $input-border-bottom-color
+
+		&:focus-within
+			border-bottom-color: $background-blue
+
+	input
+		width: 100%
+		height: 100%
+		border: none
+		background: #0000
+		color: $color-secondary
+		font-size: 20px
+		transform: translateY(5px)
+	
+	&.open
+		display: grid
+		animation: openModalInsert .5s ease-in-out forwards normal
+
+	&.close
+		animation: closeModalInsert .5s ease-in-out forwards normal
+
+.container-tags
+	display: flex
+	align-items: flex-start
+	justify-content: flex-start
+	flex-wrap: wrap
+	gap: 5px
+
+	span
+		background: $background-blue
+		font-size: 12px
+		padding: 3px 4px
+		border-radius: 8px
+		text-transform: uppercase
+
+
+#btn-open-modal
+	background: $background-blue
+	border-radius: 50%
+	width: 56px
+	height: 56px
+	border: 6px solid $color-primary
+	position: absolute
+	z-index: 4
+	bottom: 10px
+	left: calc( 50% - 28px )
+	transition: $transition-default
+
+#search-input
+	position: fixed
+	bottom: 5px
+	left: 50px
+	height: 30px
+	background: $input-bg
+	border: none
+	outline-color: #0000
+	color: $color-secondary
+	padding-left: 10px 
+	padding-right: 10px
+	border-bottom: thin solid $input-border-bottom-color
+	width: calc( 100vw - 100px )
+	z-index: 5
+	transition: $transition-default
+	transform: translateY(60px) scale(0)
+
+	&:focus
+		border-bottom-color: $background-blue
+
+input:focus-visible
+	outline: #0000 !important
+
+.bar-level-container
+	width: 100%
+	height: 10px
+	background: $background-yellow
+	position: relative
+	border-radius: 10px
+	#bar-level
+		align-self: baseline
+		width: 0
+		height: 100%
+		font-size: .85rem
+		display: flex
+		align-items: center
+		justify-content: center
+		border-radius: 10px
+		background: linear-gradient(-45deg, $background-blue, $background-blue-darker, $background-blue-lighter, $background-blue, $background-blue-darker, $background-blue-lighter)
+		background-size: 400% 400%
+		transition: width 400ms ease-in, filter 300ms ease
+		animation: fluid-bar 10s ease alternate-reverse infinite
+
+@keyframes fluid-bar
+	0%
+		background-position: 0% 50%
+	100%
+		background-position: 100% 50%
+
+
+@keyframes openModalInsert
+	0%
+		top: calc( 100vh - 40px )
+		bottom: -80vh
+	100%
+		top: 20vh
+		bottom: 0
+
+@keyframes closeModalInsert
+	0%
+		top: 20vh
+		bottom: 0
+	100%
+		top: calc( 100vh - 40px )
+		bottom: -80vh

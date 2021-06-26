@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+
+	<meta name="theme-color" content="#F2C94C">
+	<link rel="manifest" href="/manifest.json">
+	<link rel="stylesheet" href="/src/css/app.css">
+	<script type="module" src="/src/js/main.js"></script>
+</head>
+
+<body>
+	<header id="container-level">
+		<h1></h1>
+		<div class="bar-level-container">
+			<div id="bar-level"></div>
+		</div>
+		<h2></h2>
+	</header>
+
+	<main>
+		<div id="books"></div>
+		<div id="rewards"></div>
+	</main>
+
+	<button class="icon" id="btn-open-modal" aria-label="Adicionar marcador">
+		<svg width="25" height="25" fill="currentColor" viewBox="0 0 16 16">
+			<path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+		</svg>
+	</button>
+	<input type="text" id="search-input">
+	<footer>
+		<button id="btn-toggle-menu" class="bar-button burger" aria-label="Abrir menu">
+			<span></span>
+		</button>
+		<button class="bar-button icon btn-open-search" aria-label="Buscar">
+			<svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16">
+				<path
+					d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+			</svg>
+		</button>
+	</footer>
+
+
+	<div class="modal modal-insert">
+		<div class="modal-header">
+			<button id="btn-close-modal" class="bar-button burger open" aria-label="Fechar cadastro">
+				<span></span>
+			</button>
+			<button class="bar-button icon" aria-label="Buscar">
+				<svg width="13" height="13" fill="currentColor" viewBox="0 0 16 16">
+					<path
+						d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+				</svg>
+			</button>
+		</div>
+
+		<div class="modal-body">
+			<div class="input-holder">
+				<label for="book-title">Livro</label>
+				<input type="text" name="book-title" id="book-title">
+			</div>
+			<div class="input-holder">
+				<label for="book-totalPages">Total de páginas</label>
+				<input type="number" name="book-totalPages" id="book-totalPages">
+			</div>
+			<div class="input-holder">
+				<label for="book-currentPage">Página atual</label>
+				<input type="number" name="book-currentPage" id="book-currentPage">
+			</div>
+			<div class="input-holder">
+				<label for="book-tag">Tags</label>
+				<input type="text" name="book-tag" id="book-tag">
+			</div>
+			<div class="container-tags added-tags"></div>
+		</div>
+
+		<div class="modal-footer">
+			<button id="btn-modal-submit" class="icon" aria-label="Cadastrar livro">
+				<svg width="25" height="25" fill="currentColor" viewBox="0 0 16 16">
+					<path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
+				</svg>
+			</button>
+		</div>
+	</div>
+</body>
+
+</html>

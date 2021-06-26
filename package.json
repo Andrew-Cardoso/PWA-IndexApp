@@ -1,0 +1,19 @@
+{
+  "name": "indexapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -c-1 -p 3000",
+    "watch:sass": "sass --watch _dev/sass/app.sass public/src/css/app.css"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^0.12.3",
+    "sass": "^1.35.1"
+  },
+  "dependencies": {
+    "dexie": "^3.0.3"
+  }
+}
