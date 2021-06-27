@@ -5,18 +5,19 @@
 }
 
 html, body {
-  font-size: 16px;
+  font-size: 15px;
   height: 100vh;
   width: 100vw;
   background: #FFFFFF;
   overflow-x: hidden;
+  font-family: "Inter";
 }
 
 body, input, button, textarea {
   color: #FFFFFF;
   font-size: 1rem;
   font: 500 1rem;
-  font-family: Roboto, Helvetica, Arial, Helvetica, sans-serif;
+  font-family: "Inter";
 }
 
 button {
@@ -32,11 +33,12 @@ button {
   position: relative;
   padding: 0;
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0;
   outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 button.icon {
   display: flex;
@@ -60,11 +62,12 @@ button:hover, button:active, button:focus {
 }
 #container-level h1 {
   color: #9B51E0;
-  font-size: 18px;
+  font-size: 16px;
+  font-family: "Lexend Deca";
 }
 #container-level h2 {
   color: #9B51E0;
-  font-size: 14px;
+  font-size: 13px;
   display: none;
   transform: translateX(100vw);
   transition: transform 0.2s ease-in-out;
@@ -89,6 +92,13 @@ main > div {
   position: absolute;
   grid-auto-rows: min-content;
   transition: transform 0.2s ease-in-out;
+}
+
+#books {
+  font-family: "Lexend Deca";
+}
+#books h1 {
+  font-family: "Inter";
 }
 
 #rewards {
@@ -140,7 +150,7 @@ article section {
 }
 article h1 {
   grid-area: title;
-  font-size: 24px;
+  font-size: 22px;
   padding: 0;
   margin: 0;
 }
@@ -158,7 +168,7 @@ article .pages > div {
 }
 article .pages .current-page {
   color: #9B51E0;
-  font-size: 64px;
+  font-size: 60px;
   position: relative;
 }
 article .pages .current-page > button {
@@ -172,10 +182,10 @@ article .pages .current-page > button {
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.08), 0px 1px 12px rgba(0, 0, 0, 0.04);
 }
 article .pages .total-pages {
-  font-size: 36px;
+  font-size: 30px;
 }
 article .pages .divider {
-  font-size: 50px;
+  font-size: 45px;
   margin-left: -2px;
   margin-right: -6px;
   transform: rotateZ(7deg);
@@ -213,7 +223,7 @@ footer {
 }
 .menu a {
   padding: 8px 12px;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .bar-button {
@@ -320,7 +330,7 @@ footer {
   border: none;
   background: #0000;
   color: #263238;
-  font-size: 20px;
+  font-size: 18px;
   transform: translateY(5px);
 }
 .modal-insert.open {
@@ -340,10 +350,11 @@ footer {
 }
 .container-tags span {
   background: #9B51E0;
-  font-size: 12px;
+  font-size: 11px;
   padding: 3px 4px;
   border-radius: 8px;
   text-transform: uppercase;
+  font-family: "Lexend Deca";
 }
 
 #btn-open-modal {

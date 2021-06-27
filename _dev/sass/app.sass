@@ -11,6 +11,8 @@ $input-bg: color.scale($background-yellow, $lightness: -10%)
 $background-reward: #F0F0F0
 $transition-default: transform .2s ease-in-out
 $input-border-bottom-color: #26323861
+$font-primary: 'Inter'
+$font-secondary: 'Lexend Deca'
 
 *
 	margin: 0
@@ -18,17 +20,18 @@ $input-border-bottom-color: #26323861
 	box-sizing: border-box
 
 html, body
-	font-size: 16px
+	font-size: 15px
 	height: 100vh
 	width: 100vw
 	background: $background-white
 	overflow-x: hidden
+	font-family: $font-primary
 
 body, input, button, textarea
 	color: $color-primary
 	font-size: 1rem
 	font: 500 1rem
-	font-family: Roboto, Helvetica, Arial, Helvetica, sans-serif
+	font-family: $font-primary
 
 button
 	text-align: center
@@ -43,11 +46,12 @@ button
 	position: relative
 	padding: 0
 	margin: 0
-	font-size: 1.2rem
+	font-size: 1.1rem
 	font-weight: 400
 	text-transform: uppercase
 	letter-spacing: 0
 	outline: none
+	-webkit-tap-highlight-color: transparent
 
 	&.icon
 		display: flex
@@ -66,16 +70,16 @@ button
 	justify-content: flex-start
 	flex-flow: column
 	padding: 10px 20px 5px 20px
-
 	gap: 5px
 
 	h1
 		color: $background-blue
-		font-size: 18px
+		font-size: 16px
+		font-family: $font-secondary
 
 	h2
 		color: $background-blue
-		font-size: 14px
+		font-size: 13px
 		display: none
 		transform: translateX(100vw)
 		transition: $transition-default
@@ -100,6 +104,11 @@ main
 		position: absolute	
 		grid-auto-rows: min-content
 		transition: $transition-default
+
+#books
+	font-family: $font-secondary
+	h1
+		font-family: $font-primary
 
 #rewards
 	padding: 20px
@@ -151,7 +160,7 @@ article
 
 	h1
 		grid-area: title
-		font-size: 24px
+		font-size: 22px
 		padding: 0
 		margin: 0
 
@@ -168,7 +177,7 @@ article
 
 		.current-page
 			color: $background-blue
-			font-size: 64px
+			font-size: 60px
 			position: relative
 
 			> button
@@ -182,10 +191,10 @@ article
 				box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.08), 0px 1px 12px rgba(0, 0, 0, 0.04)
 
 		.total-pages
-			font-size: 36px
+			font-size: 30px
 
 		.divider
-			font-size: 50px
+			font-size: 45px
 			margin-left: -2px
 			margin-right: -6px
 			transform: rotateZ(7deg)
@@ -221,7 +230,7 @@ footer
 
 	a
 		padding: 8px 12px
-		font-size: 14px
+		font-size: 13px
 
 .bar-button
 	width: 40px
@@ -329,7 +338,7 @@ footer
 		border: none
 		background: #0000
 		color: $color-secondary
-		font-size: 20px
+		font-size: 18px
 		transform: translateY(5px)
 	
 	&.open
@@ -348,10 +357,11 @@ footer
 
 	span
 		background: $background-blue
-		font-size: 12px
+		font-size: 11px
 		padding: 3px 4px
 		border-radius: 8px
 		text-transform: uppercase
+		font-family: $font-secondary
 
 
 #btn-open-modal

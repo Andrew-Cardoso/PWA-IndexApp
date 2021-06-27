@@ -9,6 +9,8 @@ this.addEventListener( "install", event => {
 					'/',
 					'/index.html',
 					'/favicon.ico',
+					'https://fonts.googleapis.com/css2?family=Inter&display=swap',
+					'https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap',
 					'/src/css/app.css',
 					'/src/images/bookmark_black_24x24.png',
 					'/src/images/bookmark_black_48x48.png',
