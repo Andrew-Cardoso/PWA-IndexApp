@@ -1,345 +1,384 @@
+import svgEnum from '../helpers/svg.enum.js';
 import SVG from '../helpers/svg.enum.js';
 import timeoutAsync from '../helpers/timeout.promise.js';
 
-
 export default class DomService {
+  constructor(resetBooksFn, resetEditingBookFn, deleteBookFn) {
+    this._resetBooksHtml = resetBooksFn;
+    this._resetEditingBook = resetEditingBookFn;
+    this._deleteBookFn = deleteBookFn;
+  }
 
-	constructor ( resetBooksFn, resetEditingBookFn ) {
-		this._resetBooksHtml = resetBooksFn;
-		this._resetEditingBook = resetEditingBookFn;
-	}
-	
-	get booksContainer () {
-		return document.getElementById`books`;
-	}
-	
-	get rewardsContainer () {
-		return document.getElementById`rewards`;
-	}
-	
-	get searchInput () {
-		return document.getElementById`search-input`;
-	}
-	
-	get menu () {
-		return this.select`.menu`;
-	}
+  get booksContainer() {
+    return document.getElementById`books`;
+  }
 
-	get btnToggleMenu () {
-		return document.getElementById`btn-toggle-menu`;
-	}
-	
-	get btnOpenModal () {
-		return document.getElementById`btn-open-modal`;
-	}
-	
-	get btnCloseModal () {
-		return document.getElementById`btn-close-modal`;
-	}
-	
-	get btnsOpenSearch () {
-		return this.select( '.btn-open-search', true );
-	}
-	
-	get btnsCloseSearch () {
-		return this.select( '.btn-close-search', true );
-	}
+  get rewardsContainer() {
+    return document.getElementById`rewards`;
+  }
 
-	get btnModalSearch () {
-		return this.select`.modal-insert [aria-label="Buscar"]`;
-	}
-	
-	get modal () {
-		return this.select`.modal-insert`;
-	}
-	
-	get body () {
-		return this.select`body`;
-	}
-	
-	get experienceContainer () {
-		const container = document.getElementById`container-level`;
-		return {
-			title: container.querySelector`h1`,
-			subtitle: container.querySelector`h2`,
-			bar: container.querySelector`#bar-level`,
-		};
-	}
+  get searchInput() {
+    return document.getElementById`search-input`;
+  }
 
-	get form () {
-		return {
-			title: this.select`#book-title`,
-			totalPages: this.select`#book-totalPages`,
-			currentPage: this.select`#book-currentPage`,
-			tag: this.select`#book-tag`,
-			tags: this.select`.modal-insert .added-tags`,
-			btnSubmit: this.select`#btn-modal-submit`,
-		};
-	}
-	
-	select ( el, every ) {
-		return !every ? document.querySelector( el ) : document.querySelectorAll( el );
-	}
+  get menu() {
+    return this.select`.menu`;
+  }
 
-	getBookNode ( { title } ) {
-		return this.select( `[data-title="${ title }"]` );
-	}
-	
-	openModal ( book ) {
-		if ( book ) this.fillInputs( book );
+  get btnToggleMenu() {
+    return document.getElementById`btn-toggle-menu`;
+  }
 
-		this.btnsCloseSearch.length > 0 && this.closeSearch();
-		
-		this.modal.classList.add`open`;
-		
-		const menu = this.menu;
-		if ( !menu ) return;
-		
-		this.body.removeChild( menu );
-		this.btnToggleMenu.classList.remove`open`;
-	}
+  get btnOpenModal() {
+    return document.getElementById`btn-open-modal`;
+  }
 
-	fillInputs ( { title, currentPage, totalPages, tags } ) {
-		const form = this.form;
+  get btnCloseModal() {
+    return document.getElementById`btn-close-modal`;
+  }
 
-		form.title.value = title;
-		form.currentPage.value = currentPage;
-		form.totalPages.value = totalPages;
-		form.tags.append( ...tags.map( tag => `<span>${ tag }</span>`.toHtml() ) );
-	}
+  get btnsOpenSearch() {
+    return this.select('.btn-open-search', true);
+  }
 
-	async closeModalAsync () {
-		const modal = this.modal;
-		modal.classList.add`close`;
-		await timeoutAsync( 500 );
-		modal.classList.remove( 'open', 'close' );
-		this.clearInputs();
-		this._resetEditingBook();
-	}
+  get btnsCloseSearch() {
+    return this.select('.btn-close-search', true);
+  }
 
-	clearInputs () {
-		const form = this.form;
-		form.title.value = '';
-		form.currentPage.value = '';
-		form.totalPages.value = '';
-		form.tag.value = '';
-		form.tags.innerHTML = '';
-	}
+  get btnModalSearch() {
+    return this.select`.modal-insert [aria-label="Buscar"]`;
+  }
 
-	openSearch () {
-		!this.booksContainer.offsetParent && this.navigateToBooksAsync();
-		this.btnOpenModal.style.transform = 'scale(0)';
+  get modal() {
+    return this.select`.modal-insert`;
+  }
 
-		const searchInput = this.searchInput;
-		searchInput.style.transform = 'translateY(0) scale(1)';
+  get modalDelete() {
+    return this.select`.modal-delete`;
+  }
 
-		searchInput.focus();
+  get body() {
+    return this.select`body`;
+  }
 
-		this.btnsOpenSearch.forEach( btn => {
-			const btnClone = btn.cloneNode( true );
-			btnClone.addEventListener( 'click', () => this.closeSearch() );
-			btnClone.classList.replace( 'btn-open-search', 'btn-close-search' );
-			btnClone.innerHTML = btnClone.childElementCount === 0
-				? 'Fechar pesquisa'
-				: SVG.x;
-			btn.replaceWith( btnClone );
-		} );
-	}
+  get experienceContainer() {
+    const container = document.getElementById`container-level`;
+    return {
+      title: container.querySelector`h1`,
+      subtitle: container.querySelector`h2`,
+      bar: container.querySelector`#bar-level`,
+    };
+  }
 
-	closeSearch () {
-		const searchInput = this.searchInput;
-		searchInput.style.transform = 'translateY(60px) scale(0)';
+  get form() {
+    return {
+      title: this.select`#book-title`,
+      totalPages: this.select`#book-totalPages`,
+      currentPage: this.select`#book-currentPage`,
+      tag: this.select`#book-tag`,
+      tags: this.select`.modal-insert .added-tags`,
+      btnSubmit: this.select`#btn-modal-submit`,
+    };
+  }
 
-		this.btnOpenModal.style.transform = 'scale(1)';
+  select(el, every) {
+    return !every ? document.querySelector(el) : document.querySelectorAll(el);
+  }
 
-		searchInput.value = '';
+  getBookNode({ title }) {
+    return this.select(`[data-title="${title}"]`);
+  }
 
-		this.btnsCloseSearch.forEach( btn => {
-			const btnClone = btn.cloneNode( true );
-			btnClone.addEventListener( 'click', () => this.openSearch() );
-			btnClone.classList.replace( 'btn-close-search', 'btn-open-search' );
-			btnClone.innerHTML = btnClone.childElementCount === 0
-				? 'Pesquisa'
-				: SVG.search;
-			btn.replaceWith( btnClone );
-		} );
+  openModal(book) {
+    if (book) this.fillInputs(book);
 
-		this._resetBooksHtml();
-	}
+    this.btnsCloseSearch.length > 0 && this.closeSearch();
 
-	toggleMenu () {
+    this.modal.classList.add`open`;
 
-		const body = this.body;
-		const menu = this.menu;
-		const btn = this.btnToggleMenu;
+    this.btnToggleMenu.style.display = 'none';
+    document.querySelector`footer .btn-open-search`.style.display = 'none';
 
-		if ( menu ) return body.removeChild( menu ) && btn.classList.remove`open`;
+    const menu = this.menu;
+    if (!menu) return;
 
-		const linkNavigation = '<a role="button"></a>'.toHtml();
+    this.body.removeChild(menu);
+    this.btnToggleMenu.classList.remove`open`;
+  }
 
-		if ( this.booksContainer.offsetParent ) {
-			linkNavigation.innerHTML = 'Recompensas';
-			linkNavigation.addEventListener( 'click', () => this.navigateToRewardsAsync() );
-		} else {
-			linkNavigation.innerHTML = 'Livros';
-			linkNavigation.addEventListener( 'click', () => this.navigateToBooksAsync() );
-		}
+  confirmDelete ( book ) {
+    
+    if ( this.modalDelete ) return;
+    
+    const modal = `
+		<div class="modal-delete">
+			<h1>Tem certeza que deseja excluir <strong>${book.title}</strong>?</h1>
+			<div class="modal-btns">
+				<button class="btn-confirm-delete">Sim</button>
+				<button class="btn-cancel-delete">Não</button>
+			</div>
+		</div>
+	`.toHtml();
 
-		const linkSearch = '<a role="button"></a>'.toHtml();
+    modal.querySelector`.btn-confirm-delete`.addEventListener('click', () =>
+      this._deleteBookFn(book).then(() => {
+        this.getBookNode(book)?.remove();
+        this.modalDelete?.remove();
+      })
+    );
+    modal.querySelector`.btn-cancel-delete`.addEventListener('click', () => this.modalDelete?.remove());
 
-		if ( this.btnsOpenSearch.length > 0 ) {
-			linkSearch.innerHTML = 'Pesquisa';
-			linkSearch.classList.add`btn-open-search`;
-			linkSearch.addEventListener( 'click', () => this.openSearch() );
-		} else {
-			linkSearch.innerHTML = 'Fechar pesquisa';
-			linkSearch.classList.add`btn-close-search`;
-			linkSearch.addEventListener( 'click', () => this.closeSearch() );
-		}
+    this.body.appendChild(modal);
+  }
 
-		const linkOpenModal = '<a role="button">Cadastro de livro</a>'.toHtml();
-		linkOpenModal.addEventListener( 'click', () => this.openModal() );
+  fillInputs({ title, currentPage, totalPages, tags }) {
+    const form = this.form;
 
-		const divMenu = '<div class="menu"></div>'.toHtml();
+    form.title.value = title;
+    form.currentPage.value = currentPage;
+    form.totalPages.value = totalPages;
+    tags.forEach(tag => this.appendTag(tag));
+  }
 
-		[ linkNavigation, linkSearch, linkOpenModal ].forEach( link => divMenu.appendChild( link ) );
-		body.appendChild( divMenu );
-		btn.classList.add`open`;
-	}
+  async closeModalAsync() {
+    const modal = this.modal;
+    modal.classList.add`close`;
+    await timeoutAsync(500);
+    modal.classList.remove('open', 'close');
+    this.clearInputs();
+    this._resetEditingBook();
+    this.btnToggleMenu.style.display = 'grid';
+    document.querySelector`footer .btn-open-search`.style.display = 'flex';
+  }
 
-	async navigateToBooksAsync () {
-		const booksPage = this.booksContainer;
-		const rewardsPage = this.rewardsContainer;
-		const { subtitle } = this.experienceContainer;
+  clearInputs() {
+    const form = this.form;
+    form.title.value = '';
+    form.currentPage.value = '';
+    form.totalPages.value = '';
+    form.tag.value = '';
+    form.tags.innerHTML = '';
+  }
 
-		booksPage.style.display = 'grid';
+  openSearch() {
+    !this.booksContainer.offsetParent && this.navigateToBooksAsync();
+    this.btnOpenModal.style.transform = 'scale(0)';
 
-		rewardsPage.style.transform = 'translateX(100%)';
-		subtitle.style.transform = 'translateX(100vw)';
+    const searchInput = this.searchInput;
+    searchInput.style.transform = 'translateY(0) scale(1)';
 
-		await timeoutAsync();
+    searchInput.focus();
 
-		booksPage.style.transform = 'translateX(0%)';
+    this.btnsOpenSearch.forEach((btn) => {
+      const btnClone = btn.cloneNode(true);
+      btnClone.addEventListener('click', () => this.closeSearch());
+      btnClone.classList.replace('btn-open-search', 'btn-close-search');
+      btnClone.innerHTML = btnClone.childElementCount === 0 ? 'Fechar pesquisa' : SVG.x;
+      btn.replaceWith(btnClone);
+    });
+  }
 
-		this.updateMenuLink( () => this.navigateToRewardsAsync(), 'Recompensas' );
+  closeSearch() {
+    const searchInput = this.searchInput;
+    searchInput.style.transform = 'translateY(60px) scale(0)';
 
-		await timeoutAsync( 200 );
+    this.btnOpenModal.style.transform = 'scale(1)';
 
-		rewardsPage.style.display = 'none';
-		subtitle.style.display = 'none';
-	}
+    searchInput.value = '';
 
-	async navigateToRewardsAsync () {
-		this.btnsCloseSearch.length > 0 && this.closeSearch();
+    this.btnsCloseSearch.forEach((btn) => {
+      const btnClone = btn.cloneNode(true);
+      btnClone.addEventListener('click', () => this.openSearch());
+      btnClone.classList.replace('btn-close-search', 'btn-open-search');
+      btnClone.innerHTML = btnClone.childElementCount === 0 ? 'Pesquisa' : SVG.search;
+      btn.replaceWith(btnClone);
+    });
 
-		const booksPage = this.booksContainer;
-		const rewardsPage = this.rewardsContainer;
-		const { subtitle } = this.experienceContainer;
+    this._resetBooksHtml();
+    
+  }
 
-		rewardsPage.style.display = 'grid';
-		subtitle.style.display = 'initial';
+  toggleMenu() {
+    const body = this.body;
+    const menu = this.menu;
+    const btn = this.btnToggleMenu;
 
-		booksPage.style.transform = 'translateX(-100%)';
+    if (menu) return body.removeChild(menu) && btn.classList.remove`open`;
 
-		await timeoutAsync();
+    const linkNavigation = '<a role="button"></a>'.toHtml();
 
-		rewardsPage.style.transform = 'translateX(0%)';
-		subtitle.style.transform = 'translateX(0vw)';
+    if (this.booksContainer.offsetParent) {
+      linkNavigation.innerHTML = 'Recompensas';
+      linkNavigation.addEventListener('click', () => this.navigateToRewardsAsync());
+    } else {
+      linkNavigation.innerHTML = 'Livros';
+      linkNavigation.addEventListener('click', () => this.navigateToBooksAsync());
+    }
 
-		this.updateMenuLink( () => this.navigateToBooksAsync(), 'Livros' );
+    const linkSearch = '<a role="button"></a>'.toHtml();
 
-		await timeoutAsync( 200 );
+    if (this.btnsOpenSearch.length > 0) {
+      linkSearch.innerHTML = 'Pesquisa';
+      linkSearch.classList.add`btn-open-search`;
+      linkSearch.addEventListener('click', () => this.openSearch());
+    } else {
+      linkSearch.innerHTML = 'Fechar pesquisa';
+      linkSearch.classList.add`btn-close-search`;
+      linkSearch.addEventListener('click', () => this.closeSearch());
+    }
 
-		booksPage.style.display = 'none';
-	}
+    const linkOpenModal = '<a role="button">Cadastro de livro</a>'.toHtml();
+    linkOpenModal.addEventListener('click', () => this.openModal());
 
-	updateMenuLink ( fn, txt ) {
-		const menu = this.menu;
-		if ( !menu ) return;
+    const divMenu = '<div class="menu"></div>'.toHtml();
 
-		menu.removeChild( menu.firstElementChild );
+    [linkNavigation, linkSearch, linkOpenModal].forEach((link) => divMenu.appendChild(link));
+    body.appendChild(divMenu);
+    btn.classList.add`open`;
+  }
 
-		const link = `<a role="button">${ txt }</a>`.toHtml();
-		link.addEventListener( 'click', fn );
-		menu.prepend( link );
-	}
+  async navigateToBooksAsync() {
+    const booksPage = this.booksContainer;
+    const rewardsPage = this.rewardsContainer;
+    const { subtitle } = this.experienceContainer;
 
-	updateExperience ( experience ) {
-		const { title, subtitle, bar } = this.experienceContainer;
+    booksPage.style.display = 'grid';
 
-		title.innerHTML = `nível ${ experience.level }`;
-		subtitle.innerHTML = `${ experience.total - experience.current } páginas para o próximo nível`;
-		bar.style.width = `${ experience.current / experience.total * 100 }%`;
-	}
+    rewardsPage.style.transform = 'translateX(100%)';
+    subtitle.style.transform = 'translateX(100vw)';
 
-	createRewardNode ( { title, level, text } ) {
-		return `
-			<div class="reward-card" data-title="${ title }-${ level }">
-				<p>${ title } ${ level.toRoman() } - ${ text }</p>
-				${ SVG.info }
+    await timeoutAsync();
+
+    booksPage.style.transform = 'translateX(0%)';
+
+    this.updateMenuLink(() => this.navigateToRewardsAsync(), 'Recompensas');
+
+    await timeoutAsync(200);
+
+    rewardsPage.style.display = 'none';
+    subtitle.style.display = 'none';
+  }
+
+  async navigateToRewardsAsync() {
+    this.btnsCloseSearch.length > 0 && this.closeSearch();
+
+    const booksPage = this.booksContainer;
+    const rewardsPage = this.rewardsContainer;
+    const { subtitle } = this.experienceContainer;
+
+    rewardsPage.style.display = 'grid';
+    subtitle.style.display = 'initial';
+
+    booksPage.style.transform = 'translateX(-100%)';
+
+    await timeoutAsync();
+
+    rewardsPage.style.transform = 'translateX(0%)';
+    subtitle.style.transform = 'translateX(0vw)';
+
+    this.updateMenuLink(() => this.navigateToBooksAsync(), 'Livros');
+
+    await timeoutAsync(200);
+
+    booksPage.style.display = 'none';
+  }
+
+  updateMenuLink(fn, txt) {
+    const menu = this.menu;
+    if (!menu) return;
+
+    menu.removeChild(menu.firstElementChild);
+
+    const link = `<a role="button">${txt}</a>`.toHtml();
+    link.addEventListener('click', fn);
+    menu.prepend(link);
+  }
+
+  updateExperience(experience) {
+    const { title, subtitle, bar } = this.experienceContainer;
+
+    title.innerHTML = `nível ${experience.level}`;
+    subtitle.innerHTML = `${experience.total - experience.current} páginas para o próximo nível`;
+    bar.style.width = `${(experience.current / experience.total) * 100}%`;
+  }
+
+  createRewardNode({ title, level, text }) {
+    return `
+			<div class="reward-card" data-title="${title}-${level}">
+				<p>${title} ${level.toRoman()} - ${text}</p>
+				${SVG.info}
 			</div>
 		`.toHtml();
-	}
+  }
 
-	createBookNode ( book, onPageReadFn, onEditBookFn ) {
-		const nodeElement = `
-			<article data-title="${ book.title }">
-				<h1>${ book.title }</h1>
-				<button aria-label="Editar">${ SVG.pencil }</button>
+  createBookNode(book, onPageReadFn, onEditBookFn) {
+    const nodeElement = `
+			<article data-title="${book.title}">
+				<h1>${book.title}</h1>
+				<button aria-label="Deletar">${SVG.trash}</button>
+				<button aria-label="Editar">${SVG.pencil}</button>
 				<section>
-					<header class="container-tags">${ book.tags?.map( tag => `<span>${ tag }</span>` ).join( '' ) }</header>
+					<header class="container-tags">${book.tags?.map((tag) => `<span>${tag}</span>`).join('')}</header>
 					<div class="pages">
 						<div class="current-page">
-							${ book.currentPage }
-							<button class="icon" aria-label="Próxima página">${ SVG[ '+' ] }</button>
+							${book.currentPage}
+							<button class="icon" aria-label="Próxima página">${SVG['+']}</button>
 						</div>
 						<div class="divider">/</div>
-						<div class="total-pages">${ book.totalPages }</div>
+						<div class="total-pages">${book.totalPages}</div>
 					</div>
 				</section>
 			</article>
 		`.toHtml();
 
-		nodeElement.querySelector`[aria-label="Editar"]`.addEventListener( 'click', () => onEditBookFn() && this.openModal( book ) );
-		nodeElement.querySelector`[aria-label="Próxima página"]`.addEventListener( 'click', onPageReadFn );
+    nodeElement.querySelector`[aria-label="Editar"]`.addEventListener('click', () => onEditBookFn() && this.openModal(book));
+    nodeElement.querySelector`[aria-label="Próxima página"]`.addEventListener('click', onPageReadFn);
+    nodeElement.querySelector`[aria-label="Deletar"]`.addEventListener('click', () => this.confirmDelete(book));
 
-		return nodeElement;
-	}
+    return nodeElement;
+  }
 
+  initEvents(searchFn, upsertFn) {
+    const { tag, btnSubmit } = this.form;
 
-	initEvents ( searchFn, upsertFn ) {
-		const { tag, btnSubmit } = this.form;
+    this.btnOpenModal.addEventListener('click', () => this.openModal());
+    this.btnCloseModal.addEventListener('click', () => this.closeModalAsync());
+    this.btnsOpenSearch.forEach((btn) => btn.addEventListener('click', () => this.openSearch()));
+    this.btnToggleMenu.addEventListener('click', () => this.toggleMenu());
+    this.searchInput.addEventListener('keyup', searchFn);
+    this.btnModalSearch.addEventListener('click', () => this.closeModalAsync().then(() => this.openSearch()));
+    btnSubmit.addEventListener('click', upsertFn);
+    tag.addEventListener('keypress', (e) => this.addTag(e));
+  }
 
-		this.btnOpenModal.addEventListener( 'click', () => this.openModal() );
-		this.btnCloseModal.addEventListener( 'click', () => this.closeModalAsync() );
-		this.btnsOpenSearch.forEach( btn => btn.addEventListener( 'click', () => this.openSearch() ) );
-		this.btnToggleMenu.addEventListener( 'click', () => this.toggleMenu() );
-		this.searchInput.addEventListener( 'keyup', searchFn );
-		this.btnModalSearch.addEventListener( 'click', () => this.closeModalAsync().then( () => this.openSearch() ) );
-		btnSubmit.addEventListener( 'click', upsertFn );
-		tag.addEventListener( 'keypress', e => this.addTag( e ) );
-	}
+  addTag(event) {
+    if (event.key === ' ') return event.preventDefault();
 
-	addTag ( event ) {
-		if ( event.key !== 'Enter' ) return;
+    if (event.key !== 'Enter') return;
 
-		const form = this.form;
+    const form = this.form;
 
-		const tagInput = form.tag;
-		const tag = tagInput.value;
+    const tagInput = form.tag;
+    const tag = tagInput.value;
 
-		if ( !tag || tag.isEmpty() || this.alreadyAddedTag( tag ) ) return;
+    if (!tag || tag.isEmpty() || this.alreadyAddedTag(tag)) return;
 
-		tagInput.value = '';
+    tagInput.value = '';
 
-		form.tags.append( `<span>${ tag }</span>`.toHtml() );
-	}
+    this.appendTag( tag.split( ' ' ).join( '' ) );
+  }
 
-	alreadyAddedTag (tag) {
-		for ( const span of this.form.tags.childNodes) {
-			if ( tag.toLowerCase() === span.innerText.toLowerCase() ) return true;
-		}
-		return false;
-	}
+  alreadyAddedTag(tag) {
+    for (const span of this.form.tags.childNodes) {
+      if (tag.toLowerCase() === span.innerText.split(' ')[0]?.toLowerCase()) return true;
+    }
+    return false;
+  }
+
+  appendTag ( tag ) {
+    const { tags } = this.form;
+    const node = `<div>${ tag?.toLowerCase?.() } <button>${ svgEnum.x }</button></div>`.toHtml();
+    tags.appendChild( node );
+    node.querySelector`button`.addEventListener( 'click', () => tags.removeChild( node ) );    
+  }
 }
-

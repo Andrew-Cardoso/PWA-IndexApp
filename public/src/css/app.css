@@ -132,10 +132,11 @@ article {
   border-radius: 10px;
   padding: 10px;
   display: grid;
-  grid-template-areas: "title pencil" "body body";
-  grid-template-columns: 1fr 30px;
+  grid-template-areas: "title trash pencil" "body body body";
+  grid-template-columns: 1fr 30px 30px;
   grid-template-rows: minmax(30px, 0.25fr) 1fr;
-  row-gap: 5px;
+  row-gap: 4px;
+  column-gap: 4px;
 }
 article:last-child {
   margin-bottom: 10px;
@@ -159,6 +160,9 @@ article > button {
   width: 30px;
   height: 30px;
   background: #9B51E0;
+}
+article > button[aria-label=Deletar] {
+  grid-area: trash;
 }
 article .pages {
   font-weight: 600;
@@ -341,6 +345,42 @@ footer {
   animation: closeModalInsert 0.5s ease-in-out forwards normal;
 }
 
+.modal-delete {
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.08), 0px 1px 12px rgba(0, 0, 0, 0.04);
+  display: grid;
+  grid-template-rows: 1fr 24px;
+  background: #9B51E0;
+  left: calc(50% - 90px );
+  top: calc( 50% - 60px );
+  border-radius: 10px;
+  position: absolute;
+  padding: 12px;
+  height: 120px;
+  width: 180px;
+}
+.modal-delete h1 {
+  font-size: 16px;
+}
+.modal-delete .modal-btns {
+  display: flex;
+  flex-direction: row;
+  column-gap: 10px;
+}
+.modal-delete .modal-btns button {
+  border: 1px solid #F2C94C;
+  border-radius: 12px;
+  flex: 1;
+  font-size: 15px;
+}
+.modal-delete .modal-btns button.btn-confirm-delete {
+  background: transparent;
+  color: #FFFFFF;
+}
+.modal-delete .modal-btns button.btn-cancel-delete {
+  background: #F2C94C;
+  color: #FFFFFF;
+}
+
 .container-tags {
   display: flex;
   align-items: flex-start;
@@ -348,13 +388,25 @@ footer {
   flex-wrap: wrap;
   gap: 5px;
 }
-.container-tags span {
+.container-tags div {
   background: #9B51E0;
   font-size: 11px;
-  padding: 3px 4px;
+  padding: 3px 5px;
   border-radius: 8px;
   text-transform: uppercase;
   font-family: "Lexend Deca";
+  height: 22px;
+  display: flex;
+  flex-flow: row;
+  column-gap: 5px;
+}
+.container-tags button {
+  font-size: 0.5rem;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  display: flex;
+  place-items: center;
 }
 
 #btn-open-modal {
@@ -395,6 +447,12 @@ input:focus-visible {
   outline: #0000 !important;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .bar-level-container {
   width: 100%;
   height: 10px;
@@ -415,6 +473,10 @@ input:focus-visible {
   background-size: 400% 400%;
   transition: width 400ms ease-in, filter 300ms ease;
   animation: fluid-bar 10s ease alternate-reverse infinite;
+}
+
+a {
+  cursor: pointer;
 }
 
 @keyframes fluid-bar {
@@ -443,6 +505,16 @@ input:focus-visible {
   100% {
     top: calc( 100vh - 40px );
     bottom: -80vh;
+  }
+}
+@media (min-width: 768px) {
+  main > div {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 300px));
+  }
+
+  .modal-insert {
+    width: 600px;
+    margin-left: calc(50% - 300px);
   }
 }
 
